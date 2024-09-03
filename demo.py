@@ -1,7 +1,6 @@
 import numpy as np
-from enigma.main import cifrar, de_cifrar, enigma, de_enigma
+from enigma.enigma import cifrar, de_cifrar, enigma, de_enigma
 
-# Demonstração do funcionamento da biblioteca
 mensagem = "abc"
 P = np.array([[0, 1, 0], [0, 0, 1], [1, 0, 0]])  
 E = np.array([[1, 0, 0], [0, 0, 1], [0, 1, 0]])  
