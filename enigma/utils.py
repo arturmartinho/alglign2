@@ -1,6 +1,6 @@
 import numpy as np
 
-alfabeto = "abcdefghijklmnopqrstuvwxyz "
+alfabeto = "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def para_one_hot(msg):
     matriz = np.zeros((len(alfabeto), len(msg)))
@@ -15,4 +15,6 @@ def para_string(M):
         idx = np.argmax(M[:, i])
         msg += alfabeto[idx]
     return msg
+
+
 
