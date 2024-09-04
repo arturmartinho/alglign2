@@ -1,19 +1,18 @@
 import numpy as np
 
-ALFABETO = "abcdefghijklmnopqrstuvwxyz "
+alfabeto = "abcdefghijklmnopqrstuvwxyz "
 
-def para_one_hot(msg: str) -> np.array:
-    n = len(ALFABETO)
-    M = np.zeros((n, len(msg)), dtype=int)
-    for i, char in enumerate(msg):
-        if char in ALFABETO:
-            idx = ALFABETO.index(char)
-            M[idx, i] = 1
-    return M
+def para_one_hot(msg):
+    matriz = np.zeros((len(alfabeto), len(msg)))
+    for i, c in enumerate(msg):
+        idx = alfabeto.index(c)
+        matriz[idx, i] = 1
+    return matriz
 
-def para_string(M: np.array) -> str:
+def para_string(M):
     msg = ""
     for i in range(M.shape[1]):
         idx = np.argmax(M[:, i])
-        msg += ALFABETO[idx]
+        msg += alfabeto[idx]
     return msg
+

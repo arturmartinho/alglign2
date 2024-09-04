@@ -1,27 +1,34 @@
 import numpy as np
 from enigma.utils import para_one_hot, para_string
 
-
-def cifrar(msg: str, P: np.array) -> str:
+def cifrar(msg, P):
     M = para_one_hot(msg)
-    M_cifrada = P @ M
-    return para_string(M_cifrada)
+    M_c = np.dot(P, M)
+    return M_c
 
-def de_cifrar(msg: str, P: np.array) -> str:
-    M_cifrada = para_one_hot(msg)
-    M_original = np.linalg.inv(P).astype(int) @ M_cifrada
-    return para_string(M_original)
+def de_cifrar(msg_cifrada, P):
+    P_inv = np.linalg.inv(P)
+    M = np.dot(P_inv, msg_cifrada)
+    return M
 
-def enigma(msg: str, P: np.array, E: np.array) -> str:
-    mensagem_cifrada = ""
-    for char in msg:
-        mensagem_cifrada += cifrar(char, P)
-        P = P @ E  
-    return mensagem_cifrada
+def enigma(msg, P, E):
+    M = para_one_hot(msg)
+    P_current = P.copy() 
+    for i in range(M.shape[1]):
+        M[:, i] = np.dot(P_current, M[:, i])
+        P_current = np.dot(E, P_current)
+    return M
 
-def de_enigma(msg: str, P: np.array, E: np.array) -> str:
-    mensagem_original = ""
-    for char in msg:
-        mensagem_original += de_cifrar(char, P)
-        P = P @ E  
-    return mensagem_original
+def de_enigma(msg_cifrada, P, E):
+    M = msg_cifrada.copy()
+    P_current = P.copy()
+    P_inv_series = [P_current]
+    for i in range(1, M.shape[1]):
+        P_current = np.dot(E, P_current)
+        P_inv_series.append(P_current)
+        
+    for i in range(M.shape[1] - 1, -1, -1):
+        P_inv = np.linalg.inv(P_inv_series[i])
+        M[:, i] = np.dot(P_inv, M[:, i])
+
+    return M
